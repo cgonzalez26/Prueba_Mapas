@@ -176,6 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Cargar Denuncia"
+                    android:onClick="cargarDenuncia"
                     app:backgroundTint="#03A9F4" />
             </LinearLayout>
 

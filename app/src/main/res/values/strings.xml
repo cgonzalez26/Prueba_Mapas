@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Denuncias</string>
+    <string name="text_error">Error</string>
+    <string name="button_accept">Aceptar</string>
+    <string-array name="tipodenuncias_entries">
+        <item>SELECCIONE TIPO</item>
+        <item>BACHE</item>
+        <item>BASURAL</item>
+        <item>DESBORDE CLOACAL</item>
+        <item>OBSTRUCCION DE RAMPAS ACCESIBILIDAD</item>
+        <item>OCUPACION INDEBIDA DE LA VIA PUBLICA</item>
+        <item>PERDIDA DE AGUA</item>
+        <item>OTRO</item>
+    </string-array>
+
+    <string-array name="tipodenuncias_values">
+        <item>0</item>
+        <item>ID_BACHE</item>
+        <item>ID_BASURAL</item>
+        <item>ID_DESBORDE_CLOACAL</item>
+        <item>ID_OBSTRUCCION_RAMPAS</item>
+        <item>ID_OCUPACION_VIA_PUBLICA</item>
+        <item>ID_PERDIDA_AGUA</item>
+        <item>ID_OTRO</item>
+    </string-array>
 </resources>
