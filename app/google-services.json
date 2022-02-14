@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "842483020638",
+    "project_id": "denunciasapp-40499",
+    "storage_bucket": "denunciasapp-40499.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842483020638:android:1f47d681410343934295cf",
+        "android_client_info": {
+          "package_name": "com.example.prueba_mapas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842483020638-fvnbhreib462rrjn1avsgq26kppvv1gh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtP_KKVJYzv29FodgUbK4GvwsehSNnYBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842483020638-fvnbhreib462rrjn1avsgq26kppvv1gh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
