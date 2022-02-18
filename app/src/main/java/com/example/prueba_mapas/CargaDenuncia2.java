@@ -1,6 +1,7 @@
 package com.example.prueba_mapas;
 
 import android.content.Intent;
+import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +14,15 @@ import com.example.prueba_mapas.controllers.denuncias.DenunciaCallback;
 import com.example.prueba_mapas.controllers.denuncias.DenunciasController;
 import com.example.prueba_mapas.helpers.dialog.DialogHelper;
 import com.example.prueba_mapas.models.denuncias.Denuncia;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 public class CargaDenuncia2 extends AppCompatActivity {
@@ -78,14 +86,6 @@ public class CargaDenuncia2 extends AppCompatActivity {
                 DialogHelper.info(CargaDenuncia2.this, title, message, accept, false, null);
             }
 
-           /*@Override
-            public void onError(Throwable throwable) {
-                //super.onError(throwable);
-                DialogHelper.dismissLoading();
-                String errorMessage = "Ocurrió un error guardando la Denuncia: Detalle: " + (throwable != null ? throwable.getMessage() : "No disponible.");
-                DialogHelper.error(CargaDenuncia2.this, errorTitle, errorMessage, accept, true, null);
-            }*/
-
             @Override
             public void onError(Exception e) {
                 //super.onError(e);
@@ -96,27 +96,45 @@ public class CargaDenuncia2 extends AppCompatActivity {
         });
     }
 
-    public void buscarDireccion(View vista){
+    public void buscarDireccion2(View vista){
         input = (EditText)findViewById(R.id.edDireccion);
         direccion = input.getText().toString();
-
+        MarkerOptions userMarkerOption = new MarkerOptions();
         if(direccion.equals("")){
             DialogHelper.error(CargaDenuncia2.this, "Error","No hay dirección para buscar", "Aceptar", true, null);
         }else{
-            //Geocoder coder = new Geocoder(getApplicationContext());
+            Geocoder coder = new Geocoder(getApplicationContext());
+            List<Address> addressList = null;
+            Address address;
             //DialogHelper.info(CargaDenuncia2.this, "Entro", "VA bien", "Aceptar", false, null);
-           /* try {
-                address = coder.getFromLocationName(direccion, 1);
+            try {
+                addressList = coder.getFromLocationName(direccion, 4);
+                if( addressList != null) {
+                    for (int i = 0; i < addressList.size(); i++) {
+                        address = addressList.get(i);
+                        int lat = (int) (address.getLatitude() * 1E6);
+                        int lon = (int) (address.getLongitude() * 1E6);
+                        LatLng latlong_buscado = new LatLng(lat, lon);
+                        userMarkerOption.position(latlong_buscado);
+                        userMarkerOption.title("Direccion de la Denuncia");
+                        userMarkerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                        GoogleMap mMap = null;
+                        mMap.addMarker(userMarkerOption);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlong_buscado));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+                    }
+                }
+                /*
                 Address location = address.get(0);
                 int lat = (int) (location.getLatitude()*1E6);
                 int lon = (int) (location.getLongitude()*1E6);
                 LatLng latlong_buscado = new LatLng(lat, lon);
                 mMap.addMarker(new MarkerOptions().position(latlong_buscado).title("Salta"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latlong_buscado));
-
+                */
             } catch (IOException e) {
-                DialogHelper.error(CargaDenuncia2.this, errorTitle,"No se ha encontrado la dirección", accept, true, null);
-            }*/
+                DialogHelper.error(CargaDenuncia2.this, "Error","No se ha encontrado la dirección", "Aceptar", true, null);
+            }
         }
     }
 }
