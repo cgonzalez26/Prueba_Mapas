@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.prueba_mapas.helpers.dialog.DialogHelper;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
+//import com.google.android.gms.location.LocationListener;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,8 +35,8 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        GoogleApiClient.OnConnectionFailedListener
+        {
 
     private GoogleMap mMap;
     private EditText input;
@@ -86,52 +86,10 @@ public class MapsActivity extends FragmentActivity implements
 */
     }
 
-    public void buscarDireccion(View vista){
-        input = (EditText)findViewById(R.id.edDireccion);
-        direccion = input.getText().toString();
-        MarkerOptions userMarkerOption = new MarkerOptions();
-        if(direccion.equals("")){
-            DialogHelper.error(MapsActivity.this, "Error","No hay dirección para buscar", "Aceptar", true, null);
-        }else{
-            Geocoder coder = new Geocoder(getApplicationContext());
-            List<Address> addressList = null;
-            Address address;
-            //DialogHelper.info(CargaDenuncia2.this, "Entro", "VA bien", "Aceptar", false, null);
-            try {
-                addressList = coder.getFromLocationName(direccion, 4);
-                if( addressList != null) {
-                    for (int i = 0; i < addressList.size(); i++) {
-                        address = addressList.get(i);
-                        int lat = (int) (address.getLatitude() * 1E6);
-                        int lon = (int) (address.getLongitude() * 1E6);
-                        LatLng latlong_buscado = new LatLng(lat, lon);
-                        userMarkerOption.position(latlong_buscado);
-                        userMarkerOption.title("Direccion de la Denuncia");
-                        userMarkerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-
-                        mMap.addMarker(userMarkerOption);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlong_buscado));
-                        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-                    }
-                }
-                /*
-                Address location = address.get(0);
-                int lat = (int) (location.getLatitude()*1E6);
-                int lon = (int) (location.getLongitude()*1E6);
-                LatLng latlong_buscado = new LatLng(lat, lon);
-                mMap.addMarker(new MarkerOptions().position(latlong_buscado).title("Salta"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlong_buscado));
-                */
-            } catch (IOException e) {
-                DialogHelper.error(MapsActivity.this, "Error","No se ha encontrado la dirección", "Aceptar", true, null);
-            }
-        }
-    }
-
-    @Override
+    /*@Override
     public void onLocationChanged(@NonNull Location location) {
 
-    }
+    }*/
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
