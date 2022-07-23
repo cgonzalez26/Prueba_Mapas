@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Proyectos/Prueba_Mapas/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Proyectos/Prueba_Mapas/app/src/main/res/layout/carga_denuncia2.xml" value="0.18" />
         <entry key="..\:/Pruebas/TestBase/Prueba_Mapas/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/Pruebas/TestBase/Prueba_Mapas/app/src/main/res/layout/activity_maps.xml" value="0.36666666666666664" />
         <entry key="..\:/Pruebas/TestBase/Prueba_Mapas/app/src/main/res/layout/carga_denuncia1.xml" value="0.19739583333333333" />

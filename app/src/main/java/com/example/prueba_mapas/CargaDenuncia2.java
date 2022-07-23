@@ -1,8 +1,11 @@
 package com.example.prueba_mapas;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,11 +14,25 @@ import com.example.prueba_mapas.controllers.denuncias.DenunciaCallback;
 import com.example.prueba_mapas.controllers.denuncias.DenunciasController;
 import com.example.prueba_mapas.helpers.dialog.DialogHelper;
 import com.example.prueba_mapas.models.denuncias.Denuncia;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 public class CargaDenuncia2 extends AppCompatActivity {
     Denuncia denuncia = new Denuncia();
+    private Button boton;
+    private EditText input;
+    private String direccion;
+    private List<Address> address;
+    final String errorTitle = this.getString(R.string.text_error);
+    final String accept = this.getString(R.string.button_accept);
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +56,13 @@ public class CargaDenuncia2 extends AppCompatActivity {
         denuncia.setsTelefono(sTelefono);
         denuncia.settRelato(tRelato);
         denuncia.setTipoDenunciaId(TipoDenunciaId);
+
+        /*mapa = (MapView)findViewById(R.id.mapa);
+        controlMapa = mapa.getController();*/
+        input = (EditText)findViewById(R.id.edDireccion);
+        boton = (Button)findViewById(R.id.btnBuscar);
+
+ //       mapa.setBuiltInZoomControls(true);
     }
 
     public void VolverDenuncia1(View vista){
@@ -48,8 +72,6 @@ public class CargaDenuncia2 extends AppCompatActivity {
     }
 
     public void cargarDenuncia(View vista){
-        final String errorTitle = this.getString(R.string.text_error);
-        final String accept = this.getString(R.string.button_accept);
 
         EditText edEntreCalles = (EditText) findViewById(R.id.edEntreCalles);
         EditText edDireccion = (EditText) findViewById(R.id.edDireccion);
@@ -67,13 +89,6 @@ public class CargaDenuncia2 extends AppCompatActivity {
                 DialogHelper.info(CargaDenuncia2.this, title, message, accept, false, null);
             }
 
-           /*@Override
-            public void onError(Throwable throwable) {
-                //super.onError(throwable);
-                DialogHelper.dismissLoading();
-                String errorMessage = "Ocurrió un error guardando la Denuncia: Detalle: " + (throwable != null ? throwable.getMessage() : "No disponible.");
-                DialogHelper.error(CargaDenuncia2.this, errorTitle, errorMessage, accept, true, null);
-            }*/
 
             @Override
             public void onError(Exception e) {
@@ -83,5 +98,33 @@ public class CargaDenuncia2 extends AppCompatActivity {
                 DialogHelper.error(CargaDenuncia2.this, errorTitle, errorMessage, accept, true, null);
             }
         });
+    }
+
+    public void buscarDireccion(View vista){
+        direccion = input.getText().toString();
+        //mMap = googleMap;
+
+        if(direccion.equals("")){
+            DialogHelper.error(CargaDenuncia2.this, errorTitle,"No hay dirección para buscar", accept, true, null);
+        }else{
+            //toast("Buscando \""+direccion+"\"");
+            Geocoder coder = new Geocoder(getApplicationContext());
+
+            try {
+                address = coder.getFromLocationName(direccion, 1);
+                Address location = address.get(0);
+                int lat = (int) (location.getLatitude()*1E6);
+                int lon = (int) (location.getLongitude()*1E6);
+                LatLng latlong_buscado = new LatLng(lat, lon);
+                mMap.addMarker(new MarkerOptions().position(latlong_buscado).title("Salta"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latlong_buscado));
+                //GeoPoint loc = new GeoPoint(lat,lon);
+                //controlMapa.setCenter(loc);
+                //controlMapa.setZoom(14);
+            } catch (IOException e) {
+                //toast("No se ha encontrado la dirección : (");
+                DialogHelper.error(CargaDenuncia2.this, errorTitle,"No se ha encontrado la dirección", accept, true, null);
+            }
+        }
     }
 }
