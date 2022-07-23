@@ -20,11 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public void CargaDenunciaParte1(View vista){
         Intent intento = new Intent(this, CargaDenuncia1.class);
         startActivity(intento);
-    }
-
-    public void verMapa(View vista){
-        Intent intento = new Intent(this, MapsActivity.class);
-        startActivity(intento);
+        finish();
     }
 
     public void Salir(View vista){
