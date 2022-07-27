@@ -142,6 +142,7 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
                 denuncia.getsLongitud(),denuncia.getsLatitud(),denuncia.gettRelato(),denuncia.getTipoDenunciaId(),
                 insertedAt);
         DialogHelper.dismissLoading();
+        String accept = "Aceptar";
         if(id > 0) {
             String message = "La Denuncia fue registrada correctamente";
             String title = "Carga de Denuncia";
@@ -158,6 +159,7 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
             });
         }else{
             String errorMessage = "Ocurrió un error guardando Denuncia";
+            String errorTitle = "Error";
             DialogHelper.error(CargaDenuncia2.this, errorTitle, errorMessage, accept, true, null);
         }
         //Guardamos en la BD utiliazando la API
