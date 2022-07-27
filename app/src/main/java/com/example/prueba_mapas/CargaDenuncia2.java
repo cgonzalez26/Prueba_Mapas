@@ -1,6 +1,7 @@
 package com.example.prueba_mapas;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prueba_mapas.common.DbHelper;
+import com.example.prueba_mapas.common.dbDenuncias;
 import com.example.prueba_mapas.controllers.denuncias.DenunciaCallback;
 import com.example.prueba_mapas.controllers.denuncias.DenunciasController;
 import com.example.prueba_mapas.helpers.dialog.DialogCallback;
@@ -26,7 +29,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallback {
@@ -85,6 +91,13 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
         finish();
     }
 
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
     public void cargarDenuncia(View vista){
         final String errorTitle = this.getString(R.string.text_error);
         final String accept = this.getString(R.string.button_accept);
@@ -97,8 +110,42 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
         denuncia.setsDireccion(edDireccion.getText().toString());
         denuncia.setsLatitud(Double.toString(lat));
         denuncia.setsLongitud(Double.toString(lon));
+        String insertedAt = getDateTime();
 
-        DenunciasController.getInstance().cargarDenuncia(denuncia,new DenunciaCallback(){
+        //Guardamos en la BD SQLITE
+        /*DbHelper dbHelper = new DbHelper(getApplicationContext()); //CargaDenuncia2.this
+        SQLiteDatabase db_denuncias = dbHelper.getWritableDatabase();
+
+        dbHelper.registrar(denuncia.getId(),denuncia.getsNroDocumento(),denuncia.getsNombre(),denuncia.getsApellido(),
+                denuncia.getsMail(),denuncia.getsTelefono(),denuncia.getsDireccion(),denuncia.getsEntre_Calle(),
+                denuncia.getsLongitud(),denuncia.getsLatitud(),denuncia.gettRelato(),denuncia.getTipoDenunciaId(),
+                insertedAt);*/
+        dbDenuncias db = new dbDenuncias(CargaDenuncia2.this);
+        long id = db.registrarDenuncia(denuncia.getsNroDocumento(),denuncia.getsNombre(),denuncia.getsApellido(),
+                denuncia.getsMail(),denuncia.getsTelefono(),denuncia.getsDireccion(),denuncia.getsEntre_Calle(),
+                denuncia.getsLongitud(),denuncia.getsLatitud(),denuncia.gettRelato(),denuncia.getTipoDenunciaId(),
+                insertedAt);
+        DialogHelper.dismissLoading();
+        if(id > 0) {
+            String message = "La Denuncia fue registrada correctamente";
+            String title = "Carga de Denuncia";
+            DialogHelper.info(CargaDenuncia2.this, title, message, accept, false, new DialogCallback() {
+                @Override
+                public void onPositive() {
+                    super.onPositive();
+                    VolverInicial(vista);
+                }
+                @Override
+                public void onNegative() {
+                    super.onNegative();
+                }
+            });
+        }else{
+            String errorMessage = "Ocurrió un error guardando Denuncia";
+            DialogHelper.error(CargaDenuncia2.this, errorTitle, errorMessage, accept, true, null);
+        }
+        //Guardamos en la BD utiliazando la API
+        /*DenunciasController.getInstance().cargarDenuncia(denuncia,new DenunciaCallback(){
             @Override
             public void onResponse(String id) {
                 DialogHelper.dismissLoading();
@@ -127,7 +174,7 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
                 String errorMessage = "Ocurrió un error guardando Denuncia: Detalle: " + (e != null ? e.getMessage() : "No disponible.");
                 DialogHelper.error(CargaDenuncia2.this, errorTitle, errorMessage, accept, true, null);
             }
-        });
+        });*/
     }
 
     public void buscarDireccion(View vista){
