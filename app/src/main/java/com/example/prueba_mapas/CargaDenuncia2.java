@@ -21,6 +21,7 @@ import com.example.prueba_mapas.helpers.dialog.DialogHelper;
 import com.example.prueba_mapas.models.denuncias.Denuncia;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -37,6 +38,16 @@ import java.util.UUID;
 
 public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallback {
     Denuncia denuncia = new Denuncia();
+
+   /* current change
+    private Button boton;
+    private EditText input;
+    private String direccion;
+    private List<Address> address;
+    final String errorTitle = this.getString(R.string.text_error);
+    final String accept = this.getString(R.string.button_accept);
+    private GoogleMap mMap;*/
+
     private EditText input;
     private String direccion;
     private Button boton;
@@ -46,6 +57,7 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
     DialogCallback dialogCallback;
     //final String errorTitle = this.getString(R.string.text_error);
     //final String accept = this.getString(R.string.button_accept);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +81,12 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
         denuncia.setsTelefono(sTelefono);
         denuncia.settRelato(tRelato);
         denuncia.setTipoDenunciaId(TipoDenunciaId);
+
+        /*mapa = (MapView)findViewById(R.id.mapa);
+        controlMapa = mapa.getController();
+        input = (EditText)findViewById(R.id.edDireccion);
+        boton = (Button)findViewById(R.id.btnBuscar);*/
+        
         initMap();
         //input = (EditText)findViewById(R.id.edDireccion);
         //boton = (Button)findViewById(R.id.btnBuscar);
@@ -99,8 +117,6 @@ public class CargaDenuncia2 extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void cargarDenuncia(View vista){
-        final String errorTitle = this.getString(R.string.text_error);
-        final String accept = this.getString(R.string.button_accept);
 
         EditText edEntreCalles = (EditText) findViewById(R.id.edEntreCalles);
         EditText edDireccion = (EditText) findViewById(R.id.edDireccion);

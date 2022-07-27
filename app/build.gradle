@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.prueba_mapas"
@@ -41,6 +41,8 @@ dependencies {
     // Fast Android Networking
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
+
+    implementation 'com.google.firebase:firebase-bom:29.1.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
